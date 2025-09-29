@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
@@ -44,16 +44,28 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.radioButton6 = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.radioButton7 = new System.Windows.Forms.RadioButton();
+            this.radioButton8 = new System.Windows.Forms.RadioButton();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button3 = new System.Windows.Forms.Button();
+            this.pbFore = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.radioButton11 = new System.Windows.Forms.RadioButton();
+            this.radioButton12 = new System.Windows.Forms.RadioButton();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbSrc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbOut)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFore)).BeginInit();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // radioButton1
@@ -168,7 +180,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(516, 425);
+            this.button1.Location = new System.Drawing.Point(516, 426);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(110, 34);
             this.button1.TabIndex = 10;
@@ -206,6 +218,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Controls.Add(this.rbImgSrc);
             this.groupBox2.Controls.Add(this.rbCamSrc);
             this.groupBox2.Location = new System.Drawing.Point(266, 411);
@@ -214,6 +227,42 @@
             this.groupBox2.TabIndex = 12;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Source";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.radioButton7);
+            this.groupBox3.Controls.Add(this.radioButton8);
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(244, 53);
+            this.groupBox3.TabIndex = 14;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Source";
+            this.groupBox3.Visible = false;
+            // 
+            // radioButton7
+            // 
+            this.radioButton7.AutoSize = true;
+            this.radioButton7.Checked = true;
+            this.radioButton7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButton7.Location = new System.Drawing.Point(12, 19);
+            this.radioButton7.Name = "radioButton7";
+            this.radioButton7.Size = new System.Drawing.Size(107, 24);
+            this.radioButton7.TabIndex = 8;
+            this.radioButton7.TabStop = true;
+            this.radioButton7.Text = "Image File";
+            this.radioButton7.UseVisualStyleBackColor = true;
+            // 
+            // radioButton8
+            // 
+            this.radioButton8.AutoSize = true;
+            this.radioButton8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButton8.Location = new System.Drawing.Point(145, 18);
+            this.radioButton8.Name = "radioButton8";
+            this.radioButton8.Size = new System.Drawing.Size(89, 24);
+            this.radioButton8.TabIndex = 9;
+            this.radioButton8.Text = "Camera";
+            this.radioButton8.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -247,17 +296,17 @@
             // 
             // chart1
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea2);
-            legend2.Enabled = false;
-            legend2.Name = "Legend1";
-            this.chart1.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(632, 45);
             this.chart1.Name = "chart1";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chart1.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(360, 360);
             this.chart1.TabIndex = 16;
             this.chart1.Text = "chart1";
@@ -273,11 +322,79 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.ExportProcessedImage);
             // 
+            // pbFore
+            // 
+            this.pbFore.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbFore.Location = new System.Drawing.Point(266, 45);
+            this.pbFore.Name = "pbFore";
+            this.pbFore.Size = new System.Drawing.Size(360, 360);
+            this.pbFore.TabIndex = 18;
+            this.pbFore.TabStop = false;
+            this.pbFore.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(1143, 12);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 20);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "Output";
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.radioButton11);
+            this.groupBox4.Controls.Add(this.radioButton12);
+            this.groupBox4.Location = new System.Drawing.Point(266, 411);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(244, 53);
+            this.groupBox4.TabIndex = 16;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Source";
+            // 
+            // radioButton11
+            // 
+            this.radioButton11.AutoSize = true;
+            this.radioButton11.Checked = true;
+            this.radioButton11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButton11.Location = new System.Drawing.Point(12, 19);
+            this.radioButton11.Name = "radioButton11";
+            this.radioButton11.Size = new System.Drawing.Size(107, 24);
+            this.radioButton11.TabIndex = 8;
+            this.radioButton11.TabStop = true;
+            this.radioButton11.Text = "Image File";
+            this.radioButton11.UseVisualStyleBackColor = true;
+            // 
+            // radioButton12
+            // 
+            this.radioButton12.AutoSize = true;
+            this.radioButton12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButton12.Location = new System.Drawing.Point(145, 18);
+            this.radioButton12.Name = "radioButton12";
+            this.radioButton12.Size = new System.Drawing.Size(89, 24);
+            this.radioButton12.TabIndex = 9;
+            this.radioButton12.Text = "Camera";
+            this.radioButton12.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(516, 425);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(110, 34);
+            this.button4.TabIndex = 20;
+            this.button4.Text = "Load Image";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Visible = false;
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(1008, 495);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(1008, 483);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.groupBox4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.pbFore);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.button2);
@@ -298,7 +415,12 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbFore)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -324,6 +446,15 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.RadioButton radioButton6;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.PictureBox pbFore;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RadioButton radioButton7;
+        private System.Windows.Forms.RadioButton radioButton8;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.RadioButton radioButton11;
+        private System.Windows.Forms.RadioButton radioButton12;
+        private System.Windows.Forms.Button button4;
     }
 }
 

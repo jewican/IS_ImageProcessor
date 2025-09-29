@@ -188,40 +188,7 @@ namespace ImageProcessor
             devices[0].Stop();
         }
 
-        private void ChangeProcessingMode(object sender, EventArgs e)
-        {
-            pbOut.Image = null;
-            chart1.Hide();
-            switch (((RadioButton)sender).Text)
-            {
-                case "Basic Copy":
-                    currentMode = ProcessingMode.BasicCopy;
-                    radioButton1.Checked = true;
-                    break;
-                case "Greyscale":
-                    currentMode = ProcessingMode.Greyscale;
-                    radioButton2.Checked = true;
-                    break;
-                case "Color Inversion":
-                    currentMode = ProcessingMode.ColorInversion;
-                    radioButton3.Checked = true;
-                    break;
-                case "Histogram":
-                    currentMode = ProcessingMode.Histogram;
-                    radioButton4.Checked = true;
-                    chart1.Show();
-                    break;
-                case "Sepia":
-                    currentMode = ProcessingMode.Sepia;
-                    radioButton5.Checked = true;
-                    break;
-                case "Subtraction":
-                    currentMode = ProcessingMode.Subtraction;
-                    EnableSubtractionInterface();
-                    return;
-            }
-            //ProcessImage(sender, e);
-        }
+        
 
         private void ChangeSourceImage(object sender, EventArgs e)
         {
@@ -272,19 +239,85 @@ namespace ImageProcessor
 
         private void EnableSubtractionInterface() 
         {
-            Hide();
-            using (Form2 form2 = new Form2())
+            this.Size = new Size(1390, 530);
+            this.CenterToScreen();
+            // Processing Buttons
+            button2.Location = new Point(1026, 424);
+            button3.Location = new Point(1184, 425);
+            // Foreground PictureBox
+            pbFore.Show();
+            // Existing PictureBoxes
+            pbSrc.Location = new Point(632, 45);
+            pbOut.Location = new Point(995, 44);
+            // Foreground Source Controls
+            groupBox4.Show();
+            button4.Show();
+            // Background Source Controls
+            groupBox2.Location = new Point(629, 411);
+            button1.Location = new Point(881, 425);
+            // Labels
+            label1.Text = "Foreground";
+            label2.Text = "Background";
+        }
+
+        private void DisableSubtractionInterface(object sender, EventArgs e)
+        {
+            this.Size = new Size(1030, 530);
+            this.CenterToScreen();
+            // Processing Buttons
+            button2.Location = new Point(663, 425);
+            button3.Location = new Point(821, 426);
+            // Foreground PictureBox
+            pbFore.Hide();
+            pbFore.Image = null;
+            // Existing PictureBoxes
+            pbSrc.Location = new Point(266, 45);
+            pbOut.Location = new Point(632, 45);
+            // Foreground Source Controls
+            groupBox4.Hide();
+            button4.Hide();
+            // Background Source Controls
+            groupBox2.Location = new Point(266, 411);
+            button1.Location = new Point(516, 425);
+            // Labels
+            label1.Text = "Source";
+            label2.Text = "Output";
+        }
+
+        private void ChangeProcessingMode(object sender, EventArgs e)
+        {
+            pbOut.Image = null;
+            chart1.Hide();
+            DisableSubtractionInterface(sender, e);
+            switch (((RadioButton)sender).Text)
             {
-                DialogResult result = form2.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    ChangeProcessingMode(form2.ClosingSender, form2.ClosingEventArgs);
-                    Show();
-                } else
-                {
-                    Close();
-                }
+                case "Basic Copy":
+                    currentMode = ProcessingMode.BasicCopy;
+                    radioButton1.Checked = true;
+                    break;
+                case "Greyscale":
+                    currentMode = ProcessingMode.Greyscale;
+                    radioButton2.Checked = true;
+                    break;
+                case "Color Inversion":
+                    currentMode = ProcessingMode.ColorInversion;
+                    radioButton3.Checked = true;
+                    break;
+                case "Histogram":
+                    currentMode = ProcessingMode.Histogram;
+                    radioButton4.Checked = true;
+                    chart1.Show();
+                    break;
+                case "Sepia":
+                    currentMode = ProcessingMode.Sepia;
+                    radioButton5.Checked = true;
+                    break;
+                case "Subtraction":
+                    currentMode = ProcessingMode.Subtraction;
+                    EnableSubtractionInterface();
+                    return;
             }
+            //ProcessImage(sender, e);
         }
 
         private void ImgSrcBtn_Checked(object sender, EventArgs e)
