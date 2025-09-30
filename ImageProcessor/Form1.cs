@@ -25,6 +25,8 @@ namespace ImageProcessorActivity
 
         private void ProcessImage(object sender, EventArgs e)
         {
+            Bitmap b = new Bitmap(pbSrc.Image);
+
             if (rbCamSrc.Checked)
             {
                 devices[0].Sendmessage();
@@ -41,19 +43,19 @@ namespace ImageProcessorActivity
             {
                 case ProcessingMode.BasicCopy:
                     UpdateOutputPictureBox(ImageProcessor.ProcessBasicCopy(pbSrc.Image));
-                    break;
+                    return;
                 case ProcessingMode.Greyscale:
                     UpdateOutputPictureBox(ImageProcessor.ProcessGreyscale(pbSrc.Image));
-                    break;
+                    return;
                 case ProcessingMode.ColorInversion:
                     UpdateOutputPictureBox(ImageProcessor.ProcessColorInversion(pbSrc.Image));
-                    break;
+                    return;
                 case ProcessingMode.Histogram:
                     UpdateOutputPictureBox(ImageProcessor.ProcessHistogram(pbSrc.Image, chart1));
-                    break;
+                    return;
                 case ProcessingMode.Sepia:
                     UpdateOutputPictureBox(ImageProcessor.ProcessSepia(pbSrc.Image));
-                    break;
+                    return;
                 case ProcessingMode.Subtraction:
                     if (rbCamSrc.Checked)
                     {
@@ -61,11 +63,42 @@ namespace ImageProcessorActivity
                         pbSrc.Image = new Bitmap(Clipboard.GetImage(), new Size(360, 360));
                     }
                     UpdateOutputPictureBox(ImageProcessor.ProcessSubtraction(pbFore.Image, pbSrc.Image));
+                    return;
+                case ProcessingMode.Smoothing:
+                    ImageProcessor.ProcessSmoothing(b, 1);
+                    break;
+                case ProcessingMode.GaussianBlur:
+                    ImageProcessor.ProcessGaussianBlur(b, 4);
+                    break;
+                case ProcessingMode.Sharpen:
+                    ImageProcessor.ProcessSharpen(b, 11);
+                    break;
+                case ProcessingMode.MeanRemoval:
+                    ImageProcessor.ProcessMeanRemoval(b, 9);
+                    break;
+                case ProcessingMode.EmbossLaplascian:
+                    ImageProcessor.ProcessEmbossLaplascian(b, 4);
+                    break;
+                case ProcessingMode.HorizontalAndVertical:
+                    ImageProcessor.ProcessHorizontalVertical(b, 4);
+                    break;
+                case ProcessingMode.AllDirections:
+                    ImageProcessor.ProcessAllDirections(b, 8);
+                    break;
+                case ProcessingMode.Lossy:
+                    ImageProcessor.ProcessLossy(b, 4);
+                    break;
+                case ProcessingMode.Horizontal:
+                    ImageProcessor.ProcessHorizontal(b, 2);
+                    break;
+                case ProcessingMode.Vertical:  
+                    ImageProcessor.ProcessVertical(b, 0);
                     break;
                 default:
                     MessageBox.Show("No Processing Mode Selected!");
                     break;
             }
+            UpdateOutputPictureBox(b);
         }
 
         private void UpdateSourcePictureBox(Image img)
@@ -204,33 +237,57 @@ namespace ImageProcessorActivity
             {
                 case "Basic Copy":
                     currentMode = ProcessingMode.BasicCopy;
-                    radioButton1.Checked = true;
                     break;
                 case "Greyscale":
                     currentMode = ProcessingMode.Greyscale;
-                    radioButton2.Checked = true;
                     break;
                 case "Color Inversion":
                     currentMode = ProcessingMode.ColorInversion;
-                    radioButton3.Checked = true;
                     break;
                 case "Histogram":
                     currentMode = ProcessingMode.Histogram;
-                    radioButton4.Checked = true;
                     chart1.Show();
                     break;
                 case "Sepia":
                     currentMode = ProcessingMode.Sepia;
-                    radioButton5.Checked = true;
                     break;
                 case "Subtraction":
                     currentMode = ProcessingMode.Subtraction;
                     EnableSubtractionInterface();
                     return;
+                case "Smoothing":
+                    currentMode = ProcessingMode.Smoothing;
+                    break;
+                case "Gaussian Blur":
+                    currentMode = ProcessingMode.GaussianBlur;
+                    break;
+                case "Sharpen":
+                    currentMode = ProcessingMode.Sharpen;
+                    break;
+                case "Mean Removal":
+                    currentMode = ProcessingMode.MeanRemoval;
+                    break;
+                case "Emboss Laplascian":
+                    currentMode = ProcessingMode.EmbossLaplascian;
+                    break;
+                case "Horizontal and Vertical":
+                    currentMode = ProcessingMode.HorizontalAndVertical;
+                    break;
+                case "All Directions":
+                    currentMode = ProcessingMode.AllDirections;
+                    break;
+                case "Lossy":
+                    currentMode = ProcessingMode.Lossy;
+                    break;
+                case "Horizontal":
+                    currentMode = ProcessingMode.Horizontal;
+                    break;
+                case "Vertical":   
+                    currentMode = ProcessingMode.Vertical;
+                    break;
             }
             //ProcessImage(sender, e);
         }
-
         private void ChangeForegroundImage(object sender, EventArgs e)
         {
             pbFore.Image = GetImageFromFile();
@@ -273,5 +330,15 @@ enum ProcessingMode
     ColorInversion,
     Histogram,
     Sepia,
-    Subtraction
+    Subtraction,
+    Smoothing,
+    GaussianBlur,
+    Sharpen,
+    MeanRemoval,
+    EmbossLaplascian,
+    HorizontalAndVertical,
+    AllDirections,
+    Lossy,
+    Horizontal,
+    Vertical
 }

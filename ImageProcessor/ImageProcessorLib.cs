@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using ConvMatrixLib;
 
 namespace ImageProcessorLib
 {
@@ -137,8 +139,110 @@ namespace ImageProcessorLib
                     }
                 }
             }
-
             return resultImage;
+        }
+
+        public static bool ProcessSmoothing(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(1);
+            m.Factor = nWeight + 8;
+            return Conv3x3.ProcessConvolution(b, m);
+        }
+
+        public static bool ProcessGaussianBlur(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(1);
+            m.TopMid = m.MidLeft = m.MidRight = m.BottomMid = 2;
+            m.Pixel = nWeight;
+            m.Factor = nWeight + 12;
+            return Conv3x3.ProcessConvolution(b, m);
+        }
+
+        public static bool ProcessSharpen(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(0);
+            m.TopMid = m.MidLeft = m.MidRight = m.BottomMid = -2;
+            m.Pixel = nWeight;
+            m.Factor = nWeight - 8;
+            return Conv3x3.ProcessConvolution(b, m);
+        }
+
+        public static bool ProcessMeanRemoval(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(-1);
+            m.Pixel = nWeight;
+            m.Factor = nWeight - 8;
+            return Conv3x3.ProcessConvolution(b, m);
+        }
+
+        public static bool ProcessEmbossLaplascian(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(0);
+            m.TopLeft = m.TopRight = m.BottomLeft = m.BottomRight = -1;
+            m.Pixel = nWeight;
+            m.Factor = 1;
+            m.Offset = 127;
+            return Conv3x3.ProcessConvolution(b, m);
+        }
+
+        public static bool ProcessHorizontalVertical(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(0);
+            m.TopMid = m.MidLeft = m.MidRight = m.BottomMid = -1;
+            m.Pixel = nWeight;
+            m.Factor = 1;
+            m.Offset = 127;
+            return Conv3x3.ProcessConvolution(b, m);
+        }
+
+        public static bool ProcessAllDirections(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(-1);
+            m.Pixel = nWeight;
+            m.Factor = 1;
+            m.Offset = 127;
+            return Conv3x3.ProcessConvolution(b, m);
+        }
+
+        public static bool ProcessLossy(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(-2);
+            m.TopLeft = m.TopRight = m.BottomMid = 1;
+            m.Pixel = nWeight;
+            m.Factor = nWeight - 3;
+            m.Offset = 127;
+            return Conv3x3.ProcessConvolution(b, m);
+        }
+
+        public static bool ProcessHorizontal(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(0);
+            m.MidLeft = m.MidRight = -1;
+            m.Pixel = nWeight;
+            m.Factor = nWeight - 1;
+            m.Offset = 127;
+            return Conv3x3.ProcessConvolution(b, m);
+        }
+
+        public static bool ProcessVertical(Bitmap b, int nWeight)
+        {
+            ConvMatrix m = new ConvMatrix();
+            m.SetAll(0);
+            m.TopMid = -1;
+            m.BottomMid = 1;
+            m.Pixel = nWeight;
+            m.Factor = nWeight + 1;
+            m.Offset = 127;
+            return Conv3x3.ProcessConvolution(b, m);
         }
     }
 }
