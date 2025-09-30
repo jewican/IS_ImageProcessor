@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebCamLib;
 
-namespace ImageProcessor
+namespace ImageProcessorActivity
 {
     public partial class Form2 : Form
     {

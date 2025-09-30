@@ -1,4 +1,4 @@
-﻿namespace ImageProcessor
+﻿namespace ImageProcessorActivity
 {
     partial class Form2
     {

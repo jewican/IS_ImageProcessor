@@ -8,8 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebCamLib;
+using ImageProcessorLib;
 
-namespace ImageProcessor
+namespace ImageProcessorActivity
 {
     public partial class Form1 : Form
     {
@@ -19,6 +20,7 @@ namespace ImageProcessor
         public Form1()
         {
             InitializeComponent();
+            comboBox1.SelectedIndex = 0;
         }
 
         private void ProcessImage(object sender, EventArgs e)
@@ -38,167 +40,32 @@ namespace ImageProcessor
             switch (currentMode)
             {
                 case ProcessingMode.BasicCopy:
-                    UpdateOutputPictureBox(ProcessBasicCopy(pbSrc.Image));
+                    UpdateOutputPictureBox(ImageProcessor.ProcessBasicCopy(pbSrc.Image));
                     break;
                 case ProcessingMode.Greyscale:
-                    UpdateOutputPictureBox(ProcessGreyscale(pbSrc.Image));
+                    UpdateOutputPictureBox(ImageProcessor.ProcessGreyscale(pbSrc.Image));
                     break;
                 case ProcessingMode.ColorInversion:
-                    UpdateOutputPictureBox(ProcessColorInversion(pbSrc.Image));
+                    UpdateOutputPictureBox(ImageProcessor.ProcessColorInversion(pbSrc.Image));
                     break;
                 case ProcessingMode.Histogram:
-                    UpdateOutputPictureBox(ProcessHistogram(pbSrc.Image));
+                    UpdateOutputPictureBox(ImageProcessor.ProcessHistogram(pbSrc.Image, chart1));
                     break;
                 case ProcessingMode.Sepia:
-                    UpdateOutputPictureBox(ProcessSepia(pbSrc.Image));
+                    UpdateOutputPictureBox(ImageProcessor.ProcessSepia(pbSrc.Image));
                     break;
                 case ProcessingMode.Subtraction:
-                    UpdateOutputPictureBox(ProcessSubtraction());
+                    if (rbCamSrc.Checked)
+                    {
+                        devices[0].Sendmessage();
+                        pbSrc.Image = new Bitmap(Clipboard.GetImage(), new Size(360, 360));
+                    }
+                    UpdateOutputPictureBox(ImageProcessor.ProcessSubtraction(pbFore.Image, pbSrc.Image));
+                    break;
+                default:
+                    MessageBox.Show("No Processing Mode Selected!");
                     break;
             }
-        }
-
-        private Bitmap ProcessBasicCopy(Image img)
-        {
-            Bitmap bmp = new Bitmap(img.Width, img.Height);
-            Bitmap src = img as Bitmap;
-            Color color;
-            for (int i = 0; i < img.Width; i++) 
-            { 
-                for (int j = 0; j < img.Height; j++)
-                {
-                    color = src.GetPixel(i, j);
-                    bmp.SetPixel(i, j, color);
-                }
-            }
-
-            return bmp;
-        }
-
-        private Bitmap ProcessGreyscale(Image img)
-        {
-            Bitmap bmp = new Bitmap(img.Width, img.Height);
-            Bitmap src = img as Bitmap;
-            byte avg;
-            Color color;
-            for (int i = 0; i < img.Width; i++)
-            {
-                for (int j = 0; j < img.Height; j++)
-                {
-                    color = src.GetPixel(i, j);
-                    avg = (byte)((color.R + color.G + color.B) / 3);
-                    bmp.SetPixel(i, j, Color.FromArgb(color.A, avg, avg, avg));
-                }
-            }
-
-            return bmp;
-        }
-
-        private Bitmap ProcessColorInversion(Image img)
-        {
-            Bitmap bmp = new Bitmap(img.Width, img.Height);
-            Bitmap src = img as Bitmap;
-            byte r, g, b;
-            Color color;
-            for (int i = 0; i < img.Width; i++)
-            {
-                for (int j = 0; j < img.Height; j++)
-                {
-                    color = src.GetPixel(i, j);
-                    r = (byte)(255 - color.R);
-                    g = (byte)(255 - color.G);
-                    b = (byte)(255 - color.B);
-                    bmp.SetPixel(i, j, Color.FromArgb(r, g, b));
-                }
-            }
-
-            return bmp;
-        }
-
-        private Image ProcessHistogram(Image img)
-        {
-            Bitmap greyscale = ProcessGreyscale(img);
-            int[] histogram = new int[256];
-
-            for (int i = 0; i < greyscale.Width; i++)
-            {
-                for(int j = 0; j < greyscale.Height; j++)
-                {
-                    histogram[greyscale.GetPixel(i, j).R]++;
-                }
-            }
-
-            // make histogram
-            chart1.Series[0].Points.DataBind(histogram, "", "", "");
-            chart1.Update();
-
-            return null;
-        }
-
-        private Image ProcessSepia(Image img)
-        {
-            Bitmap bmp = new Bitmap(img.Width, img.Height);
-            Bitmap src = img as Bitmap;
-            byte r, g, b;
-            Color color;
-            for (int i = 0; i < img.Width; i++)
-            {
-                for (int j = 0; j < img.Height; j++)
-                {
-                    color = src.GetPixel(i, j);
-                    r = (byte)Math.Min((0.393 * color.R + 0.769 * color.G + 0.189 * color.B), 255);
-                    g = (byte)Math.Min((0.349 * color.R + 0.686 * color.G + 0.168 * color.B), 255);
-                    b = (byte)Math.Min((0.272 * color.R + 0.534 * color.G + 0.131 * color.B), 255);
-                    bmp.SetPixel(i, j, Color.FromArgb(r, g, b));
-                }
-            }
-
-            return bmp;
-        }
-
-        private Bitmap ProcessSubtraction()
-        {
-            if (rbCamSrc.Checked)
-            {
-                devices[0].Sendmessage();
-                pbSrc.Image = new Bitmap(Clipboard.GetImage(), new Size(360, 360));
-            }
-
-            if (pbSrc.Image == null || pbFore.Image == null)
-            {
-                MessageBox.Show("No Source or Foreground Image Defined!");
-                return null;
-            }
-
-            Bitmap imageB = pbFore.Image as Bitmap;
-            Bitmap imageA = pbSrc.Image as Bitmap;
-
-            Bitmap resultImage = new Bitmap(imageA.Width, imageA.Height);
-
-            Color mygreen = Color.FromArgb(0, 255, 0);
-            int greygreen = (mygreen.R + mygreen.G + mygreen.B) / 3;
-            int threshold = 5;
-
-            for (int i = 0; i < imageB.Width; i++)
-            {
-                for (int j = 0; j < imageB.Height; j++)
-                {
-                    Color pixel = imageB.GetPixel(i, j);
-                    Color backpixel = imageA.GetPixel(i, j);
-                    int grey = (pixel.R + pixel.G + pixel.B) / 3;
-                    int subtractvalue = Math.Abs(grey - greygreen);
-                    if (subtractvalue > threshold)
-                    {
-                        resultImage.SetPixel(i, j, pixel);
-                    }
-                    else
-                    {
-                        resultImage.SetPixel(i, j, backpixel);
-                    }
-                }
-            }
-
-            return resultImage;
         }
 
         private void UpdateSourcePictureBox(Image img)
@@ -380,11 +247,27 @@ namespace ImageProcessor
         {
             button1.Text = "Select Camera";
         }
+
+        private void ProcessModeChange(object sender, EventArgs e)
+        {
+            ComboBox cmb = sender as ComboBox;
+            if (cmb.SelectedIndex == 0)
+            {
+                groupBox1.Show();
+                groupBox3.Hide();
+            }
+            else
+            {
+                groupBox1.Hide();
+                groupBox3.Show();
+            }
+        }
     }
 }
 
 enum ProcessingMode
 {
+    None,
     BasicCopy,
     Greyscale,
     ColorInversion,

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ImageProcessor.Properties
+namespace ImageProcessorActivity.Properties
 {
 
 
