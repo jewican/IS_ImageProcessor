@@ -52,6 +52,9 @@ namespace ImageProcessor
                 case ProcessingMode.Sepia:
                     UpdateOutputPictureBox(ProcessSepia(pbSrc.Image));
                     break;
+                case ProcessingMode.Subtraction:
+                    UpdateOutputPictureBox(ProcessSubtraction());
+                    break;
             }
         }
 
@@ -153,6 +156,51 @@ namespace ImageProcessor
             return bmp;
         }
 
+        private Bitmap ProcessSubtraction()
+        {
+            if (rbCamSrc.Checked)
+            {
+                devices[0].Sendmessage();
+                pbSrc.Image = new Bitmap(Clipboard.GetImage(), new Size(360, 360));
+            }
+
+            if (pbSrc.Image == null || pbFore.Image == null)
+            {
+                MessageBox.Show("No Source or Foreground Image Defined!");
+                return null;
+            }
+
+            Bitmap imageB = pbFore.Image as Bitmap;
+            Bitmap imageA = pbSrc.Image as Bitmap;
+
+            Bitmap resultImage = new Bitmap(imageA.Width, imageA.Height);
+
+            Color mygreen = Color.FromArgb(0, 255, 0);
+            int greygreen = (mygreen.R + mygreen.G + mygreen.B) / 3;
+            int threshold = 5;
+
+            for (int i = 0; i < imageB.Width; i++)
+            {
+                for (int j = 0; j < imageB.Height; j++)
+                {
+                    Color pixel = imageB.GetPixel(i, j);
+                    Color backpixel = imageA.GetPixel(i, j);
+                    int grey = (pixel.R + pixel.G + pixel.B) / 3;
+                    int subtractvalue = Math.Abs(grey - greygreen);
+                    if (subtractvalue > threshold)
+                    {
+                        resultImage.SetPixel(i, j, pixel);
+                    }
+                    else
+                    {
+                        resultImage.SetPixel(i, j, backpixel);
+                    }
+                }
+            }
+
+            return resultImage;
+        }
+
         private void UpdateSourcePictureBox(Image img)
         {
             if (img == null) return;
@@ -178,17 +226,15 @@ namespace ImageProcessor
             return null;
         }
 
-        private void EnableCamera()
+        private void EnableCamera(PictureBox box)
         {
-            devices[0].ShowWindow(pbSrc);
+            devices[0].ShowWindow(box);
         }
 
         private void DisableCamera()
         {
             devices[0].Stop();
         }
-
-        
 
         private void ChangeSourceImage(object sender, EventArgs e)
         {
@@ -199,7 +245,7 @@ namespace ImageProcessor
             }
             else
             {
-                EnableCamera();
+                EnableCamera(pbSrc);
             }
 
             //ProcessImage(sender, e);
@@ -250,7 +296,6 @@ namespace ImageProcessor
             pbSrc.Location = new Point(632, 45);
             pbOut.Location = new Point(995, 44);
             // Foreground Source Controls
-            groupBox4.Show();
             button4.Show();
             // Background Source Controls
             groupBox2.Location = new Point(629, 411);
@@ -274,7 +319,6 @@ namespace ImageProcessor
             pbSrc.Location = new Point(266, 45);
             pbOut.Location = new Point(632, 45);
             // Foreground Source Controls
-            groupBox4.Hide();
             button4.Hide();
             // Background Source Controls
             groupBox2.Location = new Point(266, 411);
@@ -318,6 +362,11 @@ namespace ImageProcessor
                     return;
             }
             //ProcessImage(sender, e);
+        }
+
+        private void ChangeForegroundImage(object sender, EventArgs e)
+        {
+            pbFore.Image = GetImageFromFile();
         }
 
         private void ImgSrcBtn_Checked(object sender, EventArgs e)

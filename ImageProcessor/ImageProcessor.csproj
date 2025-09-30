@@ -107,6 +107,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="ImageProcessor_TemporaryKey.pfx" />
+    <None Include="Properties\DataSources\Form1.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
